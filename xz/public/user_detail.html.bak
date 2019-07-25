@@ -1,8 +1,0 @@
-<center><h2>检索用户</h2></center>
-<form method="get" action="/user/detail">
-<center><img src="C:/Users/web/Pictures/Camera Roll/2.jpg" width="60
-" height="20" border="0" alt="编号："><input type="text" name="uid">
-<input type="submit" value="查询"></center>
-</form>
-
-

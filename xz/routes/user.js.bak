@@ -153,8 +153,8 @@ router.get('/list',function(req,res)
 		{
 			obj.size=3
 		}
-		start=parseInt((obj.pno-1)*obj.size)
-		count=parseInt(obj.size)
+		var start=parseInt((obj.pno-1)*obj.size)
+		var count=parseInt(obj.size)
 		pool.query('select *from xz_user limit ?,?',[start,count],function(err,result)
 		{
 			//console.log(result)
@@ -192,6 +192,109 @@ router.get('/delete',function(req,res)
 			})
 	
 	})
+
+//7.邮箱检测
+router.get('/checkemail',function(req,res)
+	{
+		var obj=req.query
+		if (!obj.email)
+		{
+			res.send({code:401,msg:'email required'})
+				return
+		}
+		pool.query('select email from xz_user where email=?',[obj.email],function(err,result)
+			{
+				if (err)
+				{
+					throw err
+				}
+				if (result.length===0)
+				{
+					res.send({code:200,msg:'该邮箱不存在'})
+				}
+				res.send({code:201,msg:'该邮箱已存在！'})
+			})
+	})
+
+//8.检测手机
+router.get('/checkphone',function(req,res)
+	{
+		var obj=req.query
+		if (!obj.phone)
+		{
+			res.send({code:301,msg:'phone required'})
+				return
+		}
+		pool.query('select phone from xz_user where phone=?',[obj.phone],function(err,result)
+			{
+				if (err)
+				{
+					throw err
+				}
+				if (result.length===0)
+				{
+					res.send({code:200,msg:'该号码不存在'})
+				}
+					res.send({code:201,msg:'该号码已存在'})
+				
+			})
+	})
+
+//9.检测用户名
+router.get('/checkuname',function(req,res)
+	{
+		var obj=req.query
+		if (!obj.uname)
+		{
+			res.send({code:301,msg:'uname required'})
+				return
+		}
+		pool.query('select uname from xz_user where uname=?',[obj.uname],function(err,result)
+			{
+				if (err)
+				{
+					throw err
+				}
+				if (result.length===0)
+				{
+					res.send({code:200,msg:'该用户不存在'})
+				}
+					res.send({code:201,msg:'该用户已存在'})
+			})
+
+
+	})
+			
+//10.退出登录		
+router.get('/logout',function(req,res)
+	{
+		
+		res.send({code:200,msg:'logout succ'})
+	})		
+			
+//11.获取当前用户信息		
+router.get('/sessiondata',function(req,res)
+	{
+		var obj=req.query
+		if (!obj.uid)
+		{
+			res.send({code:301,msg:'uid required'})
+				return
+		}
+		pool.query('select uid 编号,uname 名字 from xz_user where uid=?',[obj.uid],function(err,result)
+			{
+				//console.log(result)
+				if (err)
+				{
+					throw err
+				}
+				if (result.length===0)
+				{
+					res.send({code:200,msg:'该编号用户不存在'})
+				}
+				res.send(result[0])
+			})
+	})			
 			
 module.exports=router
 
